@@ -212,7 +212,7 @@ func newConfigFile(path string) error {
 	// Initialize the static file system into which all
 	// required static assets (.sql, .js files etc.) are loaded.
 	fs := initFS(appDir, "", "", "")
-	b, err := fs.Read("config.toml.sample")
+	b, err := fs.Read(".env.sample")
 	if err != nil {
 		return fmt.Errorf("error reading sample config (is binary stuffed?): %v", err)
 	}
@@ -220,8 +220,8 @@ func newConfigFile(path string) error {
 	// Generate a random admin password.
 	pwd, err := generateRandomString(16)
 	if err == nil {
-		b = regexp.MustCompile(`admin_password\s+?=\s+?(.*)`).
-			ReplaceAll(b, []byte(fmt.Sprintf(`admin_password = "%s"`, pwd)))
+		b = regexp.MustCompile(`APP_ADMIN_PASSWORD+?=+?(.*)`).
+			ReplaceAll(b, []byte(fmt.Sprintf(`APP_ADMIN_PASSWORD="%s"`, pwd)))
 	}
 
 	return os.WriteFile(path, b, 0644)

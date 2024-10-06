@@ -98,8 +98,8 @@ generate_password(){
 }
 
 get_config() {
-	info "fetching config.toml from listmonk repo"
-	download https://raw.githubusercontent.com/knadh/listmonk/master/config.toml.sample config.toml
+	info "fetching .env from listmonk repo"
+	download https://raw.githubusercontent.com/knadh/listmonk/master/.env.sample .env
 }
 
 get_containers() {
@@ -111,10 +111,10 @@ modify_config(){
 	info "generating a random password"
 	db_password=$(generate_password)
 
-	info "modifying config.toml"
-	sed_inplace 'host = "localhost"' 'host = "listmonk_db"' config.toml
-	sed_inplace 'password = "listmonk"' "password = \"${db_password}\"" config.toml
-	sed_inplace 'address = "localhost:9000"' 'address = "0.0.0.0:9000"' config.toml
+	info "modifying .env"
+	sed_inplace 'DB_HOST="localhost"' 'DB_HOST="listmonk_db"' .env
+	sed_inplace 'DB_PASSWORD="listmonk"' "DB_PASSWORD=\"${db_password}\"" .env
+	sed_inplace 'APP_ADDRESS="localhost:9000"' 'APP_ADDRESS="0.0.0.0:9000"' config.toml
 
 	info "modifying docker-compose.yml"
 	sed_inplace 'POSTGRES_PASSWORD=listmonk' "POSTGRES_PASSWORD=$db_password" docker-compose.yml

@@ -1,12 +1,12 @@
 # Configuration
 
 ### TOML Configuration file
-One or more TOML files can be read by passing `--config config.toml` multiple times. Apart from a few low level configuration variables and the database configuration, all other settings can be managed from the `Settings` dashboard on the admin UI.
+One or more TOML files can be read by passing `--config .env` multiple times. Apart from a few low level configuration variables and the database configuration, all other settings can be managed from the `Settings` dashboard on the admin UI.
 
 To generate a new sample configuration file, run `--listmonk --new-config`
 
 ### Environment variables
-Variables in config.toml can also be provided as environment variables prefixed by `LISTMONK_` with periods replaced by `__` (double underscore). To start listmonk purely with environment variables without a configuration file, set the environment variables and pass the config flag as `--config=""`.
+Variables in .env can also be provided as environment variables prefixed by `LISTMONK_` with periods replaced by `__` (double underscore). To start listmonk purely with environment variables without a configuration file, set the environment variables and pass the config flag as `--config=""`.
 
 Example:
 
@@ -55,11 +55,11 @@ When configuring auth proxies and web application firewalls, use this table.
 
 #### Using filesystem
 
-When configuring `docker` volume mounts for using filesystem media uploads, you can follow either of two approaches. [The second option may be necessary if](https://github.com/knadh/listmonk/issues/1169#issuecomment-1674475945) your setup requires you to use `sudo` for docker commands. 
+When configuring `docker` volume mounts for using filesystem media uploads, you can follow either of two approaches. [The second option may be necessary if](https://github.com/knadh/listmonk/issues/1169#issuecomment-1674475945) your setup requires you to use `sudo` for docker commands.
 
-After making any changes you will need to run `sudo docker compose stop ; sudo docker compose up`. 
+After making any changes you will need to run `sudo docker compose stop ; sudo docker compose up`.
 
-And under `https://listmonk.mysite.com/admin/settings` you put `/listmonk/uploads`. 
+And under `https://listmonk.mysite.com/admin/settings` you put `/listmonk/uploads`.
 
 #### Using volumes
 
@@ -124,7 +124,7 @@ listmonk logs to `stdout`, which is usually not saved to any file. To save listm
 
 Settings -> Logs in admin shows the last 1000 lines of the standard log output but gets erased when listmonk is restarted.
 
-For the [service file](https://github.com/knadh/listmonk/blob/master/listmonk%40.service), you can use `ExecStart=/bin/bash -ce "exec /usr/bin/listmonk --config /etc/listmonk/config.toml --static-dir /etc/listmonk/static >>/etc/listmonk/listmonk.log 2>&1"` to create a log file that persists after restarts. [More info](https://github.com/knadh/listmonk/issues/1462#issuecomment-1868501606).
+For the [service file](https://github.com/knadh/listmonk/blob/master/listmonk%40.service), you can use `ExecStart=/bin/bash -ce "exec /usr/bin/listmonk --config /etc/listmonk/.env --static-dir /etc/listmonk/static >>/etc/listmonk/listmonk.log 2>&1"` to create a log file that persists after restarts. [More info](https://github.com/knadh/listmonk/issues/1462#issuecomment-1868501606).
 
 
 ## Time zone

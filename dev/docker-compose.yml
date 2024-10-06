@@ -14,9 +14,9 @@ services:
     networks:
       - listmonk-dev
     environment:
-      - POSTGRES_PASSWORD=listmonk-dev
-      - POSTGRES_USER=listmonk-dev
-      - POSTGRES_DB=listmonk-dev
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
     restart: unless-stopped
     volumes:
       - type: volume
@@ -48,6 +48,20 @@ services:
       - "9000:9000"
     depends_on:
       - db
+    environment:
+      - TZ=Etc/UTC
+      - APP_ADDRESS=${APP_ADDRESS}
+      - APP_ADMIN_USERNAME=${APP_ADMIN_USERNAME}
+      - APP_ADMIN_PASSWORD=${APP_ADMIN_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_SSLMODE=${DB_SSLMODE}
+      - BD_MAX_OPEN=${DB_MAX_OPEN}
+      - BD_MAX_IDLE=${DB_MAX_IDLE}
+      - BD_MAX_LIFETIME=${DB_MAX_LIFETIME}
     volumes:
       - ../:/app
       - $GOPATH/pkg/mod/cache:/go/pkg/mod/cache

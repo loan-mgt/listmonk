@@ -61,8 +61,8 @@ dockers:
       - --label=org.opencontainers.image.licenses=AGPL-3.0
     dockerfile: Dockerfile
     extra_files:
-      - config.toml.sample
-      - config-demo.toml
+      - .env.sample
+      - c.env.demo
       - docker-entrypoint.sh
   - use: buildx
     goos: linux
@@ -86,8 +86,8 @@ dockers:
       - --label=org.opencontainers.image.licenses=AGPL-3.0
     dockerfile: Dockerfile
     extra_files:
-      - config.toml.sample
-      - config-demo.toml
+      - .env.sample
+      - c.env.demo
       - docker-entrypoint.sh
   - use: buildx
     goos: linux
@@ -112,8 +112,8 @@ dockers:
       - --label=org.opencontainers.image.licenses=AGPL-3.0
     dockerfile: Dockerfile
     extra_files:
-      - config.toml.sample
-      - config-demo.toml
+      - .env.sample
+      - c.env.demo
       - docker-entrypoint.sh
   - use: buildx
     goos: linux
@@ -138,8 +138,8 @@ dockers:
       - --label=org.opencontainers.image.licenses=AGPL-3.0
     dockerfile: Dockerfile
     extra_files:
-      - config.toml.sample
-      - config-demo.toml
+      - .env.sample
+      - c.env.demo
       - docker-entrypoint.sh
 
 docker_manifests:

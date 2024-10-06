@@ -83,7 +83,7 @@ var (
 	buildString   string
 	versionString string
 
-	// If these are set in build ldflags and static assets (*.sql, config.toml.sample. ./frontend)
+	// If these are set in build ldflags and static assets (*.sql, .env.sample. ./frontend)
 	// are not embedded (in make dist), these paths are looked up. The default values before, when not
 	// overridden by build flags, are relative to the CWD at runtime.
 	appDir      string = "."

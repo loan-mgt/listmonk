@@ -2,11 +2,11 @@
 
 listmonk requires Postgres ⩾ 12.
 
-See the "[Tutorials](#tutorials)" section at the bottom for detailed guides. 
+See the "[Tutorials](#tutorials)" section at the bottom for detailed guides.
 
 ## Binary
 - Download the [latest release](https://github.com/knadh/listmonk/releases) and extract the listmonk binary. `amd64` is the main one. It works for Intel and x86 CPUs.
-- `./listmonk --new-config` to generate config.toml. Then, edit the file.
+- `./listmonk --new-config` to generate .env. Then, edit the file.
 - `./listmonk --install` to install the tables in the Postgres DB.
 - Run `./listmonk` and visit `http://localhost:9000`.
 
@@ -52,7 +52,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/knadh/listmonk/master/in
 
 The above shell script performs the following actions:
 
-- Downloads `docker-compose.yml` and generates a `config.toml`.
+- Downloads `docker-compose.yml` and generates a `.env`.
 - Runs a Postgres container and installs the database schema.
 - Runs the `listmonk` container.
 
@@ -65,14 +65,14 @@ The following workflow is recommended to setup `listmonk` manually using `docker
 
 - `docker compose up db` to run the Postgres DB.
 - `docker compose run --rm app ./listmonk --install` to setup the DB (or `--upgrade` to upgrade an existing DB).
-- Copy `config.toml.sample` to your directory and make the following changes:
+- Copy `.env.sample` to your directory and make the following changes:
     - `app.address` => `0.0.0.0:9000` (Port forwarding on Docker will work only if the app is advertising on all interfaces.)
     - `db.host` => `listmonk_db` (Container Name of the DB container)
 - Run `docker compose up app` and visit `http://localhost:9000`.
 
-##### Mounting a custom config.toml
+##### Mounting a custom .env
 
-To mount a local `config.toml` file, add the following section to `docker-compose.yml`:
+To mount a local `.env` file, add the following section to `docker-compose.yml`:
 
 ```yml
   app:
@@ -80,40 +80,41 @@ To mount a local `config.toml` file, add the following section to `docker-compos
     depends_on:
       - db
     volumes:
-    - ./path/on/your/host/config.toml:/listmonk/config.toml
+    - ./path/on/your/host/.env:/listmonk/.env
 ```
 
 !!! note
-    Some common changes done inside `config.toml` for Docker based setups:
+    Some common changes done inside `.env` for Docker based setups:
 
     - Change `app.address` to `0.0.0.0:9000`.
     - Change `db.host` to `listmonk_db`.
 
-Here's a sample `config.toml` you can use:
+Here's a sample `.env` you can use:
 
-```toml
-[app]
-address = "0.0.0.0:9000"
-admin_username = "listmonk"
-admin_password = "listmonk"
+```env
+# APP configuration
+APP_ADDRESS=0.0.0.0:9000
 
-# Database.
-[db]
-host = "listmonk_db"
-port = 5432
-user = "listmonk"
-password = "listmonk"
-database = "listmonk"
-ssl_mode = "disable"
-max_open = 25
-max_idle = 25
-max_lifetime = "300s"
+# BasicAuth authentication for the admin dashboard.
+APP_ADMIN_USERNAME=listmonk
+APP_ADMIN_PASSWORD=listmonk
+
+# Database configuration
+DB_HOST=db
+DB_PORT=9432
+DB_USER=listmonk
+DB_PASSWORD=listmonk
+DB_DATABASE=listmonk
+DB_SSL_MODE=disable
+DB_MAX_OPEN=25
+DB_MAX_IDLE=25
+DB_MAX_LIFETIME=300s
 ```
 
-Mount the local `config.toml` inside the container at `listmonk/config.toml`.
+Mount the local `.env` inside the container at `listmonk/.env`.
 
 !!! tip
-    - See [configuring with environment variables](configuration.md) for variables like `app.admin_password` and `db.password`
+    - See [configuring with environment variables](configuration.md) for variables like `APP_ADMIN_PASSWORD` and `DB_PASSWORD`
     - Ensure that both `app` and `db` containers are in running. If the containers are not running, restart them `docker compose restart app db`.
     - Refer to [this tutorial](https://yasoob.me/posts/setting-up-listmonk-opensource-newsletter-mailing/) for setting up a production instance with Docker + Nginx + LetsEncrypt SSL.
 
@@ -125,9 +126,9 @@ Mount the local `config.toml` inside the container at `listmonk/config.toml`.
 To change the port for listmonk:
 
 - Ensure no other container of listmonk app is running. You can check with `docker ps | grep listmonk`.
-- Change [L11](https://github.com/knadh/listmonk/blob/master/docker-compose.yml#L11) to `custom-port:9000` Eg: `3876:9000`. This will expose the port 3876 on your local network to the container's network interface on port 9000. 
+- Change [L11](https://github.com/knadh/listmonk/blob/master/docker-compose.yml#L11) to `custom-port:9000` Eg: `3876:9000`. This will expose the port 3876 on your local network to the container's network interface on port 9000.
 - For NGINX setup, if you're running NGINX on your local machine, you can proxy_pass to the `<MACHINE_IP>:3876`. You can also run NGINX as a docker container within the listmonk's container (for that you need to add a service `nginx` in the docker-compose.yml). If you do that, then proxy_pass will be set to `http://app:9000`. Docker's network will resolve the DNS for `app` and directly speak to port 9000 (which the app is exposing within its own network).
-            
+
 
 
 

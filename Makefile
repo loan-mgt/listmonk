@@ -20,7 +20,7 @@ FRONTEND_DEPS = \
 	$(shell find frontend/fontello frontend/public frontend/src -type f)
 
 BIN := listmonk
-STATIC := config.toml.sample \
+STATIC := .env.sample \
 	schema.sql queries.sql \
 	static/public:/public \
 	static/email-templates \
@@ -101,7 +101,7 @@ dev-docker: build-dev-docker ## Build and spawns docker containers for the entir
 # Run the backend in docker-dev mode. The frontend assets in dev mode are loaded from disk from frontend/dist.
 .PHONY: run-backend-docker
 run-backend-docker:
-	CGO_ENABLED=0 go run -ldflags="-s -w -X 'main.buildString=${BUILDSTR}' -X 'main.versionString=${VERSION}' -X 'main.frontendDir=frontend/dist'" cmd/*.go --config=dev/config.toml
+	CGO_ENABLED=0 go run -ldflags="-s -w -X 'main.buildString=${BUILDSTR}' -X 'main.versionString=${VERSION}' -X 'main.frontendDir=frontend/dist'" cmd/*.go --config dev/.env
 
 # Tear down the complete local development docker suite.
 .PHONY: rm-dev-docker
@@ -113,4 +113,4 @@ rm-dev-docker: build ## Delete the docker containers including DB volumes.
 .PHONY: init-dev-docker
 init-dev-docker: build-dev-docker ## Delete the docker containers including DB volumes.
 	cd dev; \
-	docker compose run --rm backend sh -c "make dist && ./listmonk --install --idempotent --yes --config dev/config.toml"
+	docker compose run --rm backend sh -c "make dist && ./listmonk --install --idempotent --yes --config dev/.env"

@@ -11,7 +11,7 @@ The app has two distinct components, the Go backend and the VueJS frontend. In t
 ### First time setup
 `git clone https://github.com/knadh/listmonk.git`. The project uses go.mod, so it's best to clone it outside the Go src path.
 
-1. Copy `config.toml.sample` as `config.toml` and add your config.
+1. Copy `.env.sample` as `.env` and add your config.
 2. `make dist` to build the listmonk binary. Once the binary is built, run `./listmonk --install` to run the DB setup. For subsequent dev runs, use `make run`.
 
 > [mailhog](https://github.com/mailhog/MailHog) is an excellent standalone mock SMTP server (with a UI) for testing and dev.

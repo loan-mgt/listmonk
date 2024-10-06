@@ -23,7 +23,7 @@ To spin up a local suite of:
 
 ### Verify your config file
 
-The config file provided at `dev/config.toml` will be used when running the
+The config file provided at `dev/.env` will be used when running the
 containerized development stack. Make sure the values set within are suitable
 for the feature you're trying to develop.
 

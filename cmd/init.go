@@ -23,7 +23,7 @@ import (
 	"github.com/knadh/goyesql/v2"
 	goyesqlx "github.com/knadh/goyesql/v2/sqlx"
 	"github.com/knadh/koanf/maps"
-	"github.com/knadh/koanf/parsers/toml"
+	"github.com/knadh/koanf/parsers/dotenv"
 	"github.com/knadh/koanf/providers/confmap"
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/providers/posflag"
@@ -126,7 +126,7 @@ func initFlags() {
 	}
 
 	// Register the commandline flags.
-	f.StringSlice("config", []string{"config.toml"},
+	f.StringSlice("config", []string{".env"},
 		"path to one or more config files (will be merged in order)")
 	f.Bool("install", false, "setup database (first time)")
 	f.Bool("idempotent", false, "make --install run only if the database isn't already setup")
@@ -150,9 +150,10 @@ func initFlags() {
 func initConfigFiles(files []string, ko *koanf.Koanf) {
 	for _, f := range files {
 		lo.Printf("reading config: %s", f)
-		if err := ko.Load(file.Provider(f), toml.Parser()); err != nil {
+		if err := ko.Load(file.Provider(f), dotenv.Parser()); err != nil {
 			if os.IsNotExist(err) {
-				lo.Fatal("config file not found. If there isn't one yet, run --new-config to generate one.")
+				// todo
+				lo.Println("config file not found. If there isn't one yet, run --new-config to generate one.")
 			}
 			lo.Fatalf("error loading config from file: %v.", err)
 		}
@@ -168,7 +169,7 @@ func initFS(appDir, frontendDir, staticDir, i18nDir string) stuffbin.FileSystem 
 
 		// These paths are joined with appDir.
 		appFiles = []string{
-			"./config.toml.sample:config.toml.sample",
+			"./.env.sample:.env.sample",
 			"./queries.sql:queries.sql",
 			"./schema.sql:schema.sql",
 		}
@@ -273,18 +274,19 @@ func initFS(appDir, frontendDir, staticDir, i18nDir string) stuffbin.FileSystem 
 // SQL queries into a prepared query map.
 func initDB() *sqlx.DB {
 	var c struct {
-		Host        string        `koanf:"host"`
-		Port        int           `koanf:"port"`
-		User        string        `koanf:"user"`
-		Password    string        `koanf:"password"`
-		DBName      string        `koanf:"database"`
-		SSLMode     string        `koanf:"ssl_mode"`
-		Params      string        `koanf:"params"`
-		MaxOpen     int           `koanf:"max_open"`
-		MaxIdle     int           `koanf:"max_idle"`
-		MaxLifetime time.Duration `koanf:"max_lifetime"`
+		Host        string        `koanf:"DB_HOST"`
+		Port        int           `koanf:"DB_PORT"`
+		User        string        `koanf:"DB_USER"`
+		Password    string        `koanf:"DB_PASSWORD"`
+		DBName      string        `koanf:"DB_DATABASE"`
+		SSLMode     string        `koanf:"DB_SSL_MODE"`
+		Params      string        `koanf:"DB_PARAMS"`
+		MaxOpen     int           `koanf:"DB_MAX_OPEN"`
+		MaxIdle     int           `koanf:"DB_MAX_IDLE"`
+		MaxLifetime time.Duration `koanf:"DB_MAX_LIFETIME"`
 	}
-	if err := ko.Unmarshal("db", &c); err != nil {
+
+	if err := ko.Unmarshal("", &c); err != nil {
 		lo.Fatalf("error loading db config: %v", err)
 	}
 

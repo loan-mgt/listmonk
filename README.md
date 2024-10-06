@@ -12,7 +12,7 @@ Visit [listmonk.app](https://listmonk.app) for more info. Check out the [**live 
 
 ### Docker
 
-The latest image is available on DockerHub at [`listmonk/listmonk:latest`](https://hub.docker.com/r/listmonk/listmonk/tags?page=1&ordering=last_updated&name=latest). Use the sample [docker-compose.yml](https://github.com/knadh/listmonk/blob/master/docker-compose.yml) to run manually or use the helper script. 
+The latest image is available on DockerHub at [`listmonk/listmonk:latest`](https://hub.docker.com/r/listmonk/listmonk/tags?page=1&ordering=last_updated&name=latest). Use the sample [docker-compose.yml](https://github.com/knadh/listmonk/blob/master/docker-compose.yml) to run manually or use the helper script.
 
 #### Demo
 
@@ -39,7 +39,7 @@ __________________
 
 ### Binary
 - Download the [latest release](https://github.com/knadh/listmonk/releases) and extract the listmonk binary.
-- `./listmonk --new-config` to generate config.toml. Then, edit the file.
+- `./listmonk --new-config` to generate .env. Then, edit the file.
 - `./listmonk --install` to setup the Postgres DB (or `--upgrade` to upgrade an existing DB. Upgrades are idempotent and running them multiple times have no side effects).
 - Run `./listmonk` and visit `http://localhost:9000`.
 
@@ -48,7 +48,7 @@ __________________
 
 
 ## Developers
-listmonk is free and open source software licensed under AGPLv3. If you are interested in contributing, refer to the [developer setup](https://listmonk.app/docs/developer-setup). The backend is written in Go and the frontend is Vue with Buefy for UI. 
+listmonk is free and open source software licensed under AGPLv3. If you are interested in contributing, refer to the [developer setup](https://listmonk.app/docs/developer-setup). The backend is written in Go and the frontend is Vue with Buefy for UI.
 
 
 ## License
